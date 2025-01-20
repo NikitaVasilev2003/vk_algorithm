@@ -132,4 +132,32 @@ func main() {
 		os.Exit(1)
 	}
 
-	// If the start and end cells are th
+	// If the start and end cells are the same, print the path
+	if isSameCell(startRow, startCol, endRow, endCol) {
+		printPath([]Cell{{startRow, startCol}})
+		os.Exit(0)
+	}
+
+	// Build the graph
+	buildGraph(rows, cols, weights, graph)
+
+	// Set up the starting point
+	startIndex := startRow*cols + startCol
+	parents[startIndex] = startIndex
+	distances[startIndex] = 0
+
+	levels := make([]list.List, MaxEdgeWeight+1)
+	levels[0].PushBack(startIndex)
+
+	// Perform BFS
+	bfs(graph, distances, levels, visited, weights, parents)
+
+	// Construct and print the path
+	var path []Cell
+	if !buildPath(cols, startRow, startCol, endRow, endCol, parents, &path) {
+		fmt.Fprintln(os.Stderr, "End cell is unreachable")
+		os.Exit(1)
+	}
+
+	printPath(path)
+}

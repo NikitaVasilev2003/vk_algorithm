@@ -113,4 +113,13 @@ def main():
         bfs(graph, distances, queues, visited, weights, parents)
 
         # Reconstruct and print the path
-        path = reconstruct_path(cols, start_row, start_col, end_row, end_col, parent
+        path = reconstruct_path(cols, start_row, start_col, end_row, end_col, parents)
+        if path is None:
+            print("The finish cell is out of reach", file=sys.stderr)
+        else:
+            print_path(path)
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+
+if __name__ == "__main__":
+    main()
